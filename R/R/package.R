@@ -18,7 +18,7 @@
 "_PACKAGE"
 
 # Main Construe module
-construe <<- NULL
+CONSTRUE_MODULES <<- NULL
 
 .onLoad <- function(libname, pkgname) {
   construe_python = Sys.getenv('CONSTRUE_PYTHON')
@@ -27,10 +27,10 @@ construe <<- NULL
   }
   
   if (!is_python_27(warn = TRUE) | !is_construe_installed(warn = TRUE)) {
-    construe <<- NULL
+    CONSTRUE_MODULES <<- NULL
   } else {
     #delay load construe
-    construe <<- import_from_path('construe', get_construe_path(), delay_load = TRUE)
+    CONSTRUE_MODULES <<- import_from_path('construe', get_construe_path(), delay_load = TRUE)
   }
   
 }

@@ -3,6 +3,7 @@
 \name{set_record}
 \alias{set_record}
 \alias{set_offset}
+\alias{set_duration}
 \alias{set_tfactor}
 \alias{get_tfactor}
 \alias{reset_acquisition}
@@ -17,6 +18,8 @@
 set_record(record, annotator = NULL, physical_units = FALSE)
 
 set_offset(offset)
+
+set_duration(duration)
 
 set_tfactor(tfactor)
 
@@ -45,6 +48,11 @@ annotations with the initial evidence to be interpreted.}
 \item{physical_units}{Flag to set whether the signal is in digital or physical units.}
 
 \item{offset}{The offset where the acquisition should start.}
+
+\item{duration}{The duration of the record/fragment. It has to be multiple of
+256, and the maximum value currently allowed is 23040.}
+
+\item{tfactor}{Time factor controlling the input speed.}
 }
 \description{
 Interface to control the acquisition system to work with signal records simulating the real-time input.
@@ -53,7 +61,11 @@ Interface to control the acquisition system to work with signal records simulati
 \itemize{
 \item \code{set_record}: Sets the record used for input and the initial evidence.
 
-\item \code{set_offset}: Sets an offset in the record from where the acquisition should start.
+\item \code{set_offset}: Sets an offset in the record from where the
+acquisition should start.
+
+\item \code{set_duration}: Sets the duration of the record/fragment to
+be interpreted.
 
 \item \code{set_tfactor}: Sets the time factor to control the input speed.
 

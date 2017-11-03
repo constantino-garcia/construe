@@ -13,7 +13,8 @@
 #'
 #' @import methods
 #' @import R6
-#' @importFrom reticulate import dict iterate import_from_path py_iterator py_call py_capture_output py_get_attr py_has_attr py_is_null_xptr py_to_r r_to_py tuple
+#' @importFrom reticulate import iterate iter_next import_from_path py_iterator 
+#' @importFrom reticulate py_get_attr py_list_attributes py_to_r
 #' @importFrom graphics par plot points
 "_PACKAGE"
 
@@ -25,29 +26,16 @@ CONSTRUE_MODULES <<- NULL
   if (construe_python != "") {
     Sys.setenv(RETICULATE_PYTHON = construe_python)
   }
-  
+  # TODO: setting warn to TRUE does not pass checks --as-cran
   if (!is_python_27(warn = TRUE) | !is_construe_installed(warn = TRUE)) {
     CONSTRUE_MODULES <<- NULL
   } else {
     #delay load construe
     CONSTRUE_MODULES <<- import_from_path('construe', get_construe_path(), delay_load = TRUE)
   }
-  
 }
 
 get_construe_path = function() {
   file.path(find.package('construe'), '/inst/python')
 }
 
-is_construe_installed = function(warn = FALSE) {
-  # On error, set path to NULL
-  construePath = tryCatch(get_construe_path(), error=function(e) NULL)
-  isInstalled = !is.null(construePath) && file.exists(file.path(construePath, 'construe'))
-  if (!isInstalled && warn) {
-    warning(paste0(
-      "Could not find a valid Construe installation.",
-      " Use install_construe().")
-    )
-  }
-  isInstalled
-}

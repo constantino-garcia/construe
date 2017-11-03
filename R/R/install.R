@@ -1,8 +1,15 @@
+#' Install Construe and its dependencies
+#' @describeIn install_construe Downloads the python modules required to run
+#' Construe.
+#' @param dependencies Boolean value indicating if the python dependencies of
+#' Construe should be installed. Default is TRUE.
 #' @importFrom dplyr filter
 #' @importFrom magrittr %>%
+#' @importFrom utils unzip
+#' @importFrom httr GET status_code content
 #' @export
-install_construe = function(url = 'https://api.github.com/repos/citiususc/construe/zipball',
-                            dependencies = TRUE) {
+install_construe = function(dependencies = TRUE) {
+  url = 'https://api.github.com/repos/citiususc/construe/zipball'
   stopifnot(is_python_27(warn = TRUE))
   # Download the Python code to the inst folder, under the construe R package
   message('Downloading construe...')
@@ -18,7 +25,7 @@ install_construe = function(url = 'https://api.github.com/repos/citiususc/constr
   # 
   message('Unzipping construe...')
   # extract only files under the construe folder in the root directory
-  files = unzip(tmp, list=TRUE)
+  files = unzip(tmp, list = TRUE)
   root = files[1, "Name"]
   files = files %>% dplyr::filter(grepl(paste0(root, 'construe'), Name)) %>% .$Name
   
@@ -43,6 +50,8 @@ install_construe = function(url = 'https://api.github.com/repos/citiususc/constr
   # message('Try:\n > detach("package:construe", unload=TRUE)\n > library("construe")')
 }
 
+#' @describeIn install_construe Try to install the python dependencies of
+#' Construe. 
 #' @export
 install_dependencies = function() {
   # TODO: RETRIEVE DEPENDENCIES DYNAMICALLY
@@ -67,4 +76,22 @@ install_dependencies = function() {
   if (result != 0L) {
     stop("Error ", result, " occurred installing construe dependencies.", call. = FALSE)
   }
+}
+
+#' describeIn install_construe Checks if construe is installed.
+#' @param warn Boolean value. If TRUE, a message is shown when construe is not
+#' installed.
+#' @export
+is_construe_installed = function(warn = FALSE) {
+  # On error, set path to NULL
+  construePath = tryCatch(get_construe_path(), error = function(e) NULL)
+  isInstalled = !is.null(construePath) && file.exists(file.path(construePath, 'construe'))
+  if (!isInstalled && warn) {
+    # Use message to avoid R CMD check failures
+    message(paste0(
+      "Could not find a valid Construe installation.",
+      " Use install_construe().")
+    )
+  }
+  isInstalled
 }

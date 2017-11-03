@@ -20,12 +20,12 @@ Imports:
     reticulate (>= 1.2.0.9008), 
     magrittr, 
     dplyr,
+    httr,
     methods,
     R6,
     utils
 Suggests: 
-    ggplot2,
-    testthat, 
+    testthat,
     knitr,
     rmarkdown
 Remotes:

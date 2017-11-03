@@ -13,7 +13,7 @@ CardiacCycle()
 
 FirstBeat()
 
-NormalCycle(CardiacCycle)
+NormalCycle()
 }
 \description{
 Observables representing complete cardiac cycles.
